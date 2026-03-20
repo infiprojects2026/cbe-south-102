@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mobile Survey</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600&family=Playfair+Display:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --primary: #2596be;
+            --primary: #f26522;
+            ;
+            --secondary: #5bc1da;
+            --secondary: #f5821f;
+            ;
+            --bg: #eff2f7;
+            /* --bg: #f5821f; */
+            --text-dark: #3a3a3a;
+            --text-light: #666666;
+            --neu-shadow-light: #ffffff;
+            --neu-shadow-dark: #d1d9e6;
+            --fontHeading: 'Playfair Display', serif;
+            --fontBody: 'Inter', sans-serif;
+            --fontTamil: 'Noto Sans Tamil', sans-serif;
+            --bjp: #f26522;
+            --dmk: #dc2626;
+            --others: #64748b;
+            --polling-active: #00cec8;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            outline: none;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--fontBody);
+            background-color: var(--bg);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+
+        .neu-card {
+            width: 100%;
+            max-width: 380px;
+            background: var(--bg);
+            /* background: #ffffff; */
+            border-radius: 16px;
+            box-shadow: 8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            margin: 10px auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neu-card::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            /* background-image: url('logo_dmk.png'); */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 260px;
+            opacity: 0.06;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .neu-card>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-container {
+            border-radius: 12px;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .divider {
+            height: 2px;
+            width: 100%;
+            background: var(--bg);
+            box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light);
+            border-radius: 2px;
+            margin: 0 0 10px 0;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .sno-text {
+            font-family: var(--fontHeading);
+            color: var(--primary);
+            font-size: 16px;
+            font-weight: 700;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.8);
+        }
+
+        .booth-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-light);
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: var(--bg);
+            box-shadow: 3px 3px 6px var(--neu-shadow-dark), -3px -3px 6px var(--neu-shadow-light);
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .names {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ta-name {
+            font-family: var(--fontTamil);
+            color: var(--text-light);
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .en-name {
+            font-family: var(--fontHeading);
+            color: var(--text-dark);
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .epic {
+            font-family: var(--fontBody);
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 10px;
+            text-shadow: 1px 1px 1px #fff;
+        }
+
+        .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            font-size: 12px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
+
+        .meta-left {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .meta strong {
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+            margin-left: 2px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .party-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .neu-radio-label {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .neu-btn {
+            height: 38px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            gap: 8px;
+            transition: all 0.3s ease;
+            background: var(--bg);
+            box-shadow: 4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light);
+            color: var(--text-light);
+        }
+
+        .dot-well {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dot-fill {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: transparent;
+            transition: 0.3s;
+        }
+
+        .p-text {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        input[type="radio"]:checked+.neu-btn {
+            box-shadow: inset 2px 2px 5px var(--neu-shadow-dark), inset -2px -2px 5px var(--neu-shadow-light);
+            color: var(--primary);
+        }
+
+        input[id^="bjp"]:checked+.neu-btn .dot-fill {
+            background: var(--bjp);
+            box-shadow: 0 0 6px var(--bjp);
+        }
+
+        input[id^="dmk"]:checked+.neu-btn .dot-fill {
+            background: var(--dmk);
+            box-shadow: 0 0 6px var(--dmk);
+        }
+
+        input[id^="others"]:checked+.neu-btn .dot-fill {
+            background: var(--others);
+            box-shadow: 0 0 6px var(--others);
+        }
+
+        .radio-hide {
+            display: none;
+        }
+
+        .status-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .t-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .neu-switch {
+            background: var(--bg);
+            border-radius: 10px;
+            padding: 4px;
+            display: flex;
+            box-shadow: inset 2px 2px 4px var(--neu-shadow-dark), inset -2px -2px 4px var(--neu-shadow-light);
+        }
+
+        .neu-opt {
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: 0.3s;
+        }
+
+        .neu-inp:checked+.neu-opt {
+            color: var(--primary);
+            background: var(--bg);
+            box-shadow: 2px 2px 4px var(--neu-shadow-dark), -2px -2px 4px var(--neu-shadow-light);
+        }
+
+        .neu-inp {
+            display: none;
+        }
+
+        .mobile-container {
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .mobile-input {
+            width: 100%;
+            padding: 10px 12px 10px 36px;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            background: var(--bg);
+            color: var(--text-dark);
+            outline: none;
+            box-shadow: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
+            font-size: 14px;
+            font-family: var(--fontBody);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+            font-size: 14px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .act-btn {
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: var(--fontBody);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .btn-submit {
+            color: #ffffff;
+            background: var(--secondary);
+            box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light);
+        }
+
+        .btn-new {
+            color: var(--text-light);
+            background: var(--bg);
+            box-shadow: 6px 6px 12px var(--neu-shadow-dark), -6px -6px 12px var(--neu-shadow-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--bg);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 10px 0;
+            margin-bottom: 20px;
+        }
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 380px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .nav-content img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .constituency {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .constituency-name {
+            font-family: var(--fontHeading);
+            font-size: 14px;
+            margin: 2px 0 0 0;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .minister-logo {
+            height: 40px !important;
+            border-radius: 50%;
+            box-shadow: 2px 2px 5px var(--neu-shadow-dark), -2px -2px 5px var(--neu-shadow-light);
+            margin-bottom: 2px;
+        }
+
+        .tamil-name {
+            font-size: 10px;
+            color: var(--text-light);
+            font-family: 'Noto Sans Tamil', sans-serif;
+            margin-top: 0;
+        }
+
+        .search-container {
+            max-width: 380px;
+            margin: 0 auto 20px auto;
+            padding: 0 16px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 40px 12px 20px;
+            border-radius: 50px;
+            border: 1px solid var(--secondary);
+            background: var(--bg);
+            color: var(--text-dark);
+            outline: none;
+            box-shadow: inset 5px 5px 10px var(--neu-shadow-dark), inset -5px -5px 10px var(--neu-shadow-light);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        /* Login Status UI for Demo */
+        .login-status-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .login-user-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .login-avatar {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #5bc1da;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 10px;
+        }
+
+        .login-username {
+            font-weight: 700;
+            font-size: 10px;
+            color: #444;
+        }
+
+        .login-role-badge {
+            font-size: 7px;
+            font-weight: 800;
+            padding: 1px 4px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .btn-logout {
+            font-size: 9px;
+            color: #ef4444;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        /* Result Badge */
+        #result-count {
+            text-align: center;
+            padding: 8px 16px;
+            margin: 0 20px 10px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #e0e5ec, #d1d9e6);
+            color: #4a6fa5;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.08), inset -2px -2px 4px rgba(255, 255, 255, 0.8);
+        }
+
+        /* --- PREMIUM DARK MODAL --- */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            padding: 15px;
+        }
+
+        .modal-container {
+            background: #1e293b;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow:
+                10px 10px 20px #0f172a,
+                -10px -10px 20px #2e3a51;
+            padding: 24px;
+            color: #f1f5f9;
+            position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            font-family: var(--fontHeading);
+            font-size: 20px;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 20px;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+
+        .modal-close:hover {
+            color: #f1f5f9;
+        }
+
+        .modal-form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        @media (max-width: 480px) {
+            .modal-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 11px;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input,
+        .form-select {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            padding: 10px 12px;
+            color: #f1f5f9;
+            font-size: 14px;
+            outline: none;
+            box-shadow: inset 2px 2px 5px #0f172a, inset -2px -2px 5px #2e3a51;
+            transition: border-color 0.2s;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--secondary);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+            border-top: 1px solid #334155;
+            padding-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 14px;
+            transition: transform 0.1s;
+        }
+
+        .modal-btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-cancel {
+            background: #334155;
+            color: #f1f5f9;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="nav-content">
+            <img class="dmk-logo" src="./bjp-logo.png" alt="">
+            <div class="constituency">
+                <img class="minister-logo" src="./vanathi-maam.png" alt="">
+                <h2 class="constituency-name">Coimbatore South-120</h2>
+                <span class="tamil-name">(கோயம்புத்தூர் தெற்கு)</span>
+            </div>
+            <div class="login-status-bar">
+                <div class="login-user-info">
+                    <div class="login-avatar">D</div>
+                    <div>
+                        <div class="login-username">User</div>
+                        <span class="login-role-badge">Admin</span>
+                    </div>
+                </div>
+                <a href="#" class="btn-logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="search-container">
+        <input type="text" id="booth-search" class="search-input" placeholder="Search Booth...">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="general-search" class="search-input" placeholder="Search Voter...">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    </div>
+
+    <div id="result-count" style="display:none;">0 results found</div>
+
+    <!-- MODAL FOR ADD NEW -->
+    <div class="modal-backdrop" id="addNewModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 class="modal-title">New Voter Entry <span style="font-size: 14px; opacity: 0.7;">#New</span></h2>
+                <i class="fa-solid fa-xmark modal-close" onclick="closeModal()"></i>
+            </div>
+            <form id="voterForm">
+                <div class="modal-form-grid">
+                    <div class="form-group">
+                        <label>S.No *</label>
+                        <input type="number" name="sno" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>EPIC No *</label>
+                        <input type="text" name="epic" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Name (Tamil) *</label>
+                        <input type="text" name="name_ta" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Name (English) *</label>
+                        <input type="text" name="name_en" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Relation Type *</label>
+                        <select name="rel_type" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Father">Father</option>
+                            <option value="Husband">Husband</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Rel Name (English) *</label>
+                        <input type="text" name="rel_name" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Age *</label>
+                        <input type="number" name="age" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender *</label>
+                        <select name="gender" class="form-select" required>
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Booth *</label>
+                        <input type="number" name="booth" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Page No *</label>
+                        <input type="number" name="page_no" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mobile</label>
+                        <input type="tel" name="mobile" class="form-input" placeholder="Optional">
+                    </div>
+                    <div class="form-group">
+                        <label>Party</label>
+                        <select name="party" class="form-select">
+                            <option value="">Select</option>
+                            <option value="BJP">BJP</option>
+                            <option value="DMK">DMK</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Gov Beneficiaries</label>
+                        <select name="government_beneficiaries" class="form-select">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Postal</label>
+                        <select name="postal" class="form-select">
+                            <option value="No">No</option>
+                            <option value="Yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="modal-btn btn-save">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="card-container"></div>
+
+    <script src="data.js"></script>
+    <script>
+        let currentBoothQuery = '';
+        let currentSearchQuery = '';
+        const container = document.getElementById('card-container');
+        const boothSearchInput = document.getElementById('booth-search');
+        const generalSearchInput = document.getElementById('general-search');
+        const resultBadge = document.getElementById('result-count');
+
+        function triggerFetch() {
+            container.innerHTML = '';
+            fetchData();
+        }
+
+        // Search Handlers
+        boothSearchInput.addEventListener('input', (e) => {
+            currentBoothQuery = e.target.value.trim();
+            triggerFetch();
+        });
+
+        generalSearchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value.trim().toLowerCase();
+            triggerFetch();
+        });
+
+        function fetchData() {
+            // Filter local data
+            let filtered = dummyVoterData.filter(item => {
+                const matchBooth = !currentBoothQuery || String(item.bth) === currentBoothQuery;
+                const matchGeneral = !currentSearchQuery ||
+                    item.en.toLowerCase().includes(currentSearchQuery) ||
+                    item.epic.toLowerCase().includes(currentSearchQuery) ||
+                    item.ta.includes(currentSearchQuery);
+                return matchBooth && matchGeneral;
+            });
+
+            // Show result count
+            if (currentBoothQuery || currentSearchQuery) {
+                resultBadge.textContent = `${filtered.length} results found`;
+                resultBadge.style.display = 'block';
+            } else {
+                resultBadge.style.display = 'none';
+            }
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div style="text-align:center; padding:20px; color:#888;">No results found</div>';
+                return;
+            }
+
+            renderCards(filtered);
+        }
+
+        function renderCards(data) {
+            const fragment = document.createDocumentFragment();
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'neu-card';
+                const genderShort = item.gen === 'Male' ? 'M' : (item.gen === 'Female' ? 'F' : 'O');
+                const uid = item.sno;
+
+                card.innerHTML = `
+                <div class="profile-container">
+                    <div class="header-row">
+                        <div class="sno-text">S.No: <span>${item.sno}</span></div>
+                        <div class="booth-badge">Booth: <span>${item.bth}</span></div>
+                    </div>
+                    <div class="info-row">
+                        <div class="names">
+                            <span class="ta-name">${item.ta}</span>
+                            <span class="en-name">${item.en}</span>
+                        </div>
+                        <div class="epic">${item.epic}</div>
+                    </div>
+                    <div class="meta">
+                        <div class="meta-left">
+                            <div>Rel: <strong>${item.rnm}</strong></div>
+                            <div>Page No: <strong>${item.pg}</strong></div>
+                        </div>
+                        <div>Age: <strong>${item.age} / ${genderShort}</strong></div>
+                    </div>
+                </div>
+                <div class="divider"></div>
+                <div>
+                    <div class="section-label"><i class="fa-solid fa-flag"></i> Select Party</div>
+                    <div class="party-list">
+                        <label class="neu-radio-label">
+                            <input type="radio" name="party_${uid}" id="bjp_${uid}" value="BJP" class="radio-hide" ${item.party === 'BJP' ? 'checked' : ''}>
+                            <div class="neu-btn"><div class="dot-well"><div class="dot-fill"></div></div><span class="p-text">BJP</span></div>
+                        </label>
+                        <label class="neu-radio-label">
+                            <input type="radio" name="party_${uid}" id="dmk_${uid}" value="DMK" class="radio-hide" ${item.party === 'DMK' ? 'checked' : ''}>
+                            <div class="neu-btn"><div class="dot-well"><div class="dot-fill"></div></div><span class="p-text">DMK</span></div>
+                        </label>
+                        <label class="neu-radio-label">
+                            <input type="radio" name="party_${uid}" id="others_${uid}" value="Others" class="radio-hide" ${item.party === 'Others' ? 'checked' : ''}>
+                            <div class="neu-btn"><div class="dot-well"><div class="dot-fill"></div></div><span class="p-text">Others</span></div>
+                        </label>
+                    </div>
+                    <div class="section-label"><i class="fa-solid fa-sliders"></i> Status</div>
+                    <div class="status-group">
+                        <div class="toggle-row">
+                            <div class="t-label"><i class="fa-solid fa-building-columns" style="color:#aaa"></i> Beneficiaries</div>
+                            <div class="neu-switch">
+                                <label><input type="radio" name="ben_${uid}" value="No" class="neu-inp" ${item.gov !== 'Yes' ? 'checked' : ''}><div class="neu-opt">No</div></label>
+                                <label><input type="radio" name="ben_${uid}" value="Yes" class="neu-inp" ${item.gov === 'Yes' ? 'checked' : ''}><div class="neu-opt">Yes</div></label>
+                            </div>
+                        </div>
+                        <div class="toggle-row">
+                            <div class="t-label"><i class="fa-solid fa-envelope" style="color:#aaa"></i> Postal Vote</div>
+                            <div class="neu-switch">
+                                <label><input type="radio" name="postal_${uid}" value="No" class="neu-inp" checked><div class="neu-opt">No</div></label>
+                                <label><input type="radio" name="postal_${uid}" value="Yes" class="neu-inp"><div class="neu-opt">Yes</div></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="section-label"><i class="fa-solid fa-square-phone"></i> Mobile</div>
+                    <div class="mobile-container">
+                        <i class="fa-solid fa-mobile-screen mobile-icon"></i>
+                        <input type="tel" class="mobile-input" placeholder="Mobile Number" value="${item.mobile || ''}">
+                    </div>
+                    <div class="actions">
+                        <button class="act-btn btn-submit" onclick="alert('Demo: Update logic would go here')">Submit Entry</button>
+                        <button type="button" class="act-btn btn-new" onclick="openModal()"><i class="fa-solid fa-plus"></i> New</button>
+                    </div>
+                </div>
+                `;
+                fragment.appendChild(card);
+            });
+            container.appendChild(fragment);
+        }
+
+        // Modal Functions
+        const modal = document.getElementById('addNewModal');
+        const voterForm = document.getElementById('voterForm');
+
+        function openModal() {
+            modal.style.display = 'flex';
+            voterForm.reset();
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Close modal on backdrop click
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        };
+
+        // Initial Load
+        document.addEventListener('DOMContentLoaded', fetchData);
+    </script>
+</body>
+
+</html>
